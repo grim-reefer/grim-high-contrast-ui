@@ -1,7 +1,7 @@
 {
   "name": "grim-high-contrast-ui",
   "theme": "ui",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "High-Contrast ui for Use with Bright, Vibrant Syntax.",
   "keywords": [
     "ui",
