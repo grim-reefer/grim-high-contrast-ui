@@ -1,57 +1,155 @@
-
-// Tabs
-// -------------------
-
-// Displays selectable tabs above the editor.
-// Overrides: atom/tabs
+@tab-radius: 3px;
+@modified-icon-width: 8px;
+@tab-skew: 30deg;
+@tab-top-padding: 5px;
+@tab-max-width: 160px;
 
 .tab-bar {
-  background-color: @tab-bar-background-color;
-  border-bottom: 1px solid @base-border-color;
+  height: @tab-height + @tab-top-padding + @tab-bottom-border-height;
+  background: @tab-bar-background-color;
+  box-shadow: inset 0 -8px 8px -4px rgba(0,0,0, .15);
+  padding: 0 10px 0 25px;
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   .tab {
     color: @text-color;
     height: @tab-height;
     line-height: @tab-height;
     font-size: @font-size;
-    border-right: 1px solid @tab-border-color;
-    background-color: @tab-background-color;
-    &.active {
-      color: @text-color-selected;
-      background-color: @tab-background-color-active;
+    border: @base-border-color;
+    background-color: @tab-bar-background-color;
+    position: relative;
+    top: @tab-top-padding;
+    max-width: @tab-max-width;
+    padding: 0;
+    margin: 0 20px 0 5px;
+    transition: color .1s ease-in;
+
+    &, &:before, &:after {
+      background-image: -webkit-linear-gradient(top, lighten(#333, 7%), #333);
+      height: @tab-height;
     }
 
-
-    // Modified Icon (the circle) -------------------
-    &.modified:not(:hover) .close-icon {
-      top: 50%;
-      right: @component-padding + 4px; // 4px -> half of icon size
-      margin-top: -3px;
-      border-color: @text-color-info;
-    }
-    &.modified:hover .close-icon {
-      color: currentColor;
+    &:before, &:after {
+      content: '';
+      position: absolute;
+      top: 0px;
+      width: 25px;
+      height: @tab-height;
     }
 
-
-    // Close Icon (the X) -------------------
-    .close-icon:hover {
-      color: @text-color-selected;
+    // Left Angled Edge
+    &:before {
+      left: -14px;
+      border-top-left-radius: @tab-radius;
+      box-shadow: inset 1px 1px 0 @tab-border-color, -4px 0px 4px rgba(0,0,0,.1);
+      -webkit-transform: skewX(-@tab-skew);
     }
-    &.active .close-icon:hover {
-      color: @text-color;
+
+    // Right Angled Edge
+    &:after {
+      right: -14px;
+      border-top-right-radius: @tab-radius;
+      box-shadow: inset -1px 1px 0 @tab-border-color, 4px 0px 4px rgba(0,0,0,.1);
+      -webkit-transform: skewX(@tab-skew);
     }
 
+    .close-icon {
+      right: 0;
+      z-index: 3;
+      text-align: right;
+      line-height: @tab-height;
+      color: @text-color-error;
 
-    // Dragging -------------------
-    // Styles get applied while dragging a tab
-    &.is-dragging {
-      background: darken(@tab-background-color, 10%);
-      border-color: transparent;
-      opacity: .5;
-      & .close-icon {
-        visibility: hidden;
+      &:hover {
+        color: @text-color-success;
       }
     }
+
+    &.modified:not(:hover) .close-icon {
+      right: 0;
+      top: @tab-height/2 - @modified-icon-width/2 + 1px;
+      width: @modified-icon-width;
+      height: @modified-icon-width;
+    }
+
+    &.modified:hover .close-icon:hover {
+      color: @text-color-warning;
+    }
+
+    .title {
+      position: relative;
+      z-index: 1;
+      margin-top: -@tab-top-padding;
+      padding-top: @tab-top-padding;
+      padding-right: 10px;
+    }
   }
+
+  .tab.active {
+    z-index: 1;
+    color: @text-color-selected;
+    box-shadow: inset -1px 1px 0 @tab-border-color, 4px -4px 4px rgba(0,0,0,.1);
+
+    .close-icon {
+      line-height: @tab-height - 1px;
+      color: @text-color-error;
+    }
+
+    &, &:before, &:after {
+      background-image: -webkit-linear-gradient(top, lighten(@tab-background-color-active, 20%), @tab-background-color-active);
+      height: @tab-height + 1px;
+    }
+
+    &:before {
+      box-shadow: inset 1px 1px 0 @tab-border-color, -4px -4px 4px rgba(0,0,0,.1);
+    }
+
+    &:after {
+      box-shadow: inset -1px 1px 0 @tab-border-color, 4px -4px 4px rgba(0,0,0,.1);
+    }
+  }
+
+  .tab:hover {
+    color: @text-color-success;
+  }
+
+  .tab.active:hover .close-icon {
+    color: @text-color-warning;
+
+    &:hover {
+      color: inherit;
+    }
+  }
+
+  .placeholder {
+    height: @tab-height + @tab-top-padding + @tab-bottom-border-height;
+    pointer-events: none;
+    &:before {
+      margin-left: -9px; // center between tabs
+    }
+    &:after {
+      top: @tab-height + @tab-top-padding + @tab-bottom-border-height - 2px;
+      margin-left: -10px; // center between tabs
+    }
+  }
+}
+
+// Border
+.tab-bar + .item-views::before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  height: @tab-bottom-border-height;
+  left: 0;
+  right: 0;
+  background-color: @base-background-color;
+  border-top: 1px solid @tab-border-color;
+  border-bottom: 2px solid @tab-bar-bottom-border-color;
+  pointer-events: none;
 }

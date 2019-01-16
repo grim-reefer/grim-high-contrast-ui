@@ -1,6 +1,4 @@
-
 // Text
-// -------------------
 
 .text-smaller {
   font-size: smaller;
@@ -8,14 +6,12 @@
 
 .text-subtle    { color: @text-color-subtle; }
 .text-highlight { color: @text-color-highlight; }
-
 .text-info    { color: @text-color-info; }
 .text-success { color: @text-color-success; }
 .text-warning { color: @text-color-warning; }
 .text-error   { color: @text-color-error; }
 
-
-// Highlights ---------------
+// Highlights
 
 .highlight         { .highlight-mixin(@background-color-highlight); }
 .highlight-info    { .highlight-mixin(@background-color-info); }
@@ -30,11 +26,9 @@
   background-color: @color;
 }
 
-
-// Background Message ---------------
+// Background Message
 // Shown when no tabs are open.
-
 .background-message {
   font-weight: bold;
-  color: @text-color-subtle;
+  color: @base-border-color;
 }
